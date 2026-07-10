@@ -8,20 +8,24 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      {/* Sección de acciones */}
-      <div className="home-grid-acciones">
-        <div className="home-card-accion" onClick={() => navigate('/catalogo')}>
-          <h3>Ver Catálogo</h3>
-        </div>
-        
-        <div className="home-card-accion" onClick={() => setMostrarHorario(true)}>
-          <h3>Horario</h3>
-        </div>
+      <div className="home-layout">
+        {/* Lateral izquierdo: acciones */}
+        <aside className="home-sidebar-acciones">
+          <button className="home-card-accion" onClick={() => navigate('/catalogo')}>
+            Ver catálogo
+          </button>
 
-        {/* Tarjeta de Acceso Admin */}
-        <div className="home-card-accion card-admin" onClick={() => navigate('/admin-login')}>
-          <h3>Acceso Administrador</h3>
-        </div>
+          <button className="home-card-accion" onClick={() => setMostrarHorario(true)}>
+            Ver Horario
+          </button>
+
+          <button className="home-card-accion card-admin" onClick={() => navigate('/admin-login')}>
+            Acces admin
+          </button>
+        </aside>
+
+        {/* Área principal vacía para mantener estructura */}
+        <section className="home-main-placeholder" />
       </div>
 
       {/* Modal de Horario */}

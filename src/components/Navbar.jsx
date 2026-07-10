@@ -46,7 +46,7 @@ const Navbar = () => {
           <li><Link to="/blog" className="menu-card">Blog</Link></li>
           <li><Link to="/contacto" className="menu-card">Contacto</Link></li>
         </ul>
-        <Link to="/cart" className="btn-cart">🛒 Carrito $5.000</Link>
+        <Link to="/cart" className="btn-cart">🛒 Carrito </Link>
       </div>
 
     </nav>

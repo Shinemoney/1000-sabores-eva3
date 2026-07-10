@@ -48,3 +48,8 @@
 - [x] Crear `AdminLogin.jsx` para acceso exclusivo admin.
 - [x] Actualizar rutas en `App.jsx` (`/login` usuarios, `/admin-login` admin).
 - [x] Cambiar tarjeta "Acceso Administrador" en `Home.jsx` hacia `/admin-login`.
+
+## Home lateral izquierda (tarjetas café)
+- [ ] Reestructurar `Home.jsx` a layout lateral izquierdo (vertical y compacto).
+- [ ] Aplicar estilo profesional café en `Home.css` para las 3 tarjetas.
+- [ ] Verificar consistencia responsive y mantener modal de horario.
