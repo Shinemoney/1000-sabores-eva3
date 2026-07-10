@@ -1,0 +1,31 @@
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.cart-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.btn-delete {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.btn-finalizar {
+  background-color: #8b4513; /* Color café del botón de tu imagen */
+  color: white;
+  padding: 15px 30px;
+  width: 100%;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}

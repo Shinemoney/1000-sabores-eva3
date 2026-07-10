@@ -1,0 +1,87 @@
+.blog-page {
+  padding: 36px 28px 48px;
+  background-color: #fffaf2;
+  text-align: center;
+}
+
+.blog-title {
+  margin: 0;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.05;
+  color: #7a3b0a;
+}
+
+.blog-subtitle {
+  margin: 10px auto 42px;
+  max-width: 980px;
+  font-size: clamp(1.1rem, 2vw, 2rem);
+  color: #2f1e17;
+  font-style: italic;
+}
+
+.blog-grid {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(260px, 1fr));
+  gap: 36px;
+}
+
+.blog-card {
+  background: #ffffff;
+  border: 1px solid #ffb8c6;
+  border-radius: 16px;
+  padding: 26px 30px;
+  text-align: left;
+  min-height: 210px;
+  box-shadow: 0 4px 14px rgba(245, 98, 131, 0.08);
+}
+
+.blog-card h2 {
+  margin: 0 0 8px;
+  color: #d86000;
+  font-size: clamp(1.5rem, 2.2vw, 2.2rem);
+  line-height: 1.15;
+  font-weight: 800;
+}
+
+.blog-card p {
+  margin: 0 0 14px;
+  color: #2f1d17;
+  font-size: clamp(1rem, 1.5vw, 1.5rem);
+  line-height: 1.45;
+}
+
+.blog-link {
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  color: #ff2f70;
+  font-weight: 800;
+  font-size: clamp(1.1rem, 1.5vw, 2rem);
+  cursor: pointer;
+}
+
+.blog-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.blog-link:focus-visible {
+  outline: 3px solid #ff2f70;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (max-width: 992px) {
+  .blog-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .blog-card {
+    min-height: auto;
+  }
+}

@@ -1,0 +1,104 @@
+.vista-categoria-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 36px 20px 56px;
+}
+
+.vista-categoria-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.vista-categoria-header h2 {
+  margin: 0;
+  color: #5d4037;
+}
+
+.vista-categoria-back {
+  text-decoration: none;
+  color: #a33a5f;
+  font-weight: 700;
+  border: 1px solid #ffc3d4;
+  background: #fff6f9;
+  border-radius: 999px;
+  padding: 8px 14px;
+}
+
+.vista-categoria-back:hover {
+  background: #ffe8ef;
+}
+
+.vista-categoria-empty {
+  color: #6b4f45;
+  background: #fff;
+  border: 1px solid #ffd6e3;
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.vista-productos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.vista-producto-card {
+  background: #fff;
+  border: 1px solid #ffd0de;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 18px rgba(93, 64, 55, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.vista-producto-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 22px rgba(93, 64, 55, 0.14);
+}
+
+.vista-producto-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.vista-producto-info {
+  padding: 14px 14px 16px;
+}
+
+.vista-producto-info h3 {
+  margin: 0 0 8px;
+  color: #4a332c;
+  font-size: 1rem;
+}
+
+.vista-producto-precio {
+  margin: 0;
+  color: #a33a5f;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .vista-productos-grid {
+    grid-template-columns: repeat(2, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .vista-categoria-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .vista-productos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vista-producto-img {
+    height: 200px;
+  }
+}

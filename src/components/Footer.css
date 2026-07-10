@@ -1,0 +1,27 @@
+.footer-container {
+  background-color: #8B4513; /* Café tipo madera/chocolate */
+  color: white;
+  padding: 30px;
+  text-align: center;
+  margin-top: auto; /* Empuja el footer al fondo de la página */
+}
+
+.footer-logo-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.footer-logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.footer-info {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
