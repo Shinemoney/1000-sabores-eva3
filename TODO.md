@@ -50,6 +50,6 @@
 - [x] Cambiar tarjeta "Acceso Administrador" en `Home.jsx` hacia `/admin-login`.
 
 ## Home lateral izquierda (tarjetas café)
-- [ ] Reestructurar `Home.jsx` a layout lateral izquierdo (vertical y compacto).
-- [ ] Aplicar estilo profesional café en `Home.css` para las 3 tarjetas.
-- [ ] Verificar consistencia responsive y mantener modal de horario.
+- [x] Reestructurar `Home.jsx` a layout lateral izquierdo (vertical y compacto).
+- [x] Aplicar estilo profesional café en `Home.css` para las 3 tarjetas.
+- [x] Verificar consistencia responsive y mantener modal de horario.
