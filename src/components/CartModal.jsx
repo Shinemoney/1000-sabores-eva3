@@ -1,11 +1,14 @@
 import React, { useState, useContext } from 'react';
 import { CartContext } from '../context/CartContext';
 import ShippingModal from './ShippingModal';
+import TrackingSimulationModal from './TrackingSimulationModal';
 import './CartModal.css';
 
 const CartModal = ({ isOpen, onClose }) => {
-  const { cart, resumen, removeFromCart, updateCantidad, confirmarPedido } = useContext(CartContext);
+  const { cart, resumen, pedidoActual, removeFromCart, updateCantidad, confirmarPedido, avanzarEstadoPedido } =
+    useContext(CartContext);
   const [isShippingOpen, setIsShippingOpen] = useState(false);
+  const [isTrackingOpen, setIsTrackingOpen] = useState(false);
   const [errorConfirmacion, setErrorConfirmacion] = useState('');
 
   if (!isOpen) return null;
@@ -20,7 +23,7 @@ const CartModal = ({ isOpen, onClose }) => {
 
     setErrorConfirmacion('');
     setIsShippingOpen(false);
-    onClose();
+    setIsTrackingOpen(true);
   };
 
   return (
@@ -108,6 +111,16 @@ const CartModal = ({ isOpen, onClose }) => {
         cart={cart}
         resumen={resumen}
         onConfirm={handleConfirmarPedido}
+      />
+
+      <TrackingSimulationModal
+        isOpen={isTrackingOpen}
+        pedidoActual={pedidoActual}
+        onUpdateEstado={avanzarEstadoPedido}
+        onClose={() => {
+          setIsTrackingOpen(false);
+          onClose();
+        }}
       />
     </>
   );

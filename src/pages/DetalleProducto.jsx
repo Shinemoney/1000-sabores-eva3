@@ -1,15 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { productos } from '../data/mockDatabase';
+import { CartContext } from '../context/CartContext';
 import './DetalleProducto.css';
 
 const DetalleProducto = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { addToCart } = useContext(CartContext);
   const producto = productos.find(p => p.id === parseInt(id));
-  const [mensaje, setMensaje] = useState("");
+  const [mensaje, setMensaje] = useState('');
+  const [tamano, setTamano] = useState('Pequeña (10p)');
 
   if (!producto) return <h2>Producto no encontrado</h2>;
+
+  const handleAgregarAlCarrito = () => {
+    const precioBase = producto.precio;
+    const descuentoPct = producto.oferta ? 20 : 0;
+    const precioFinal = descuentoPct > 0 ? Math.round(precioBase * (1 - descuentoPct / 100)) : precioBase;
+
+    addToCart({
+      ...producto,
+      tamano,
+      mensajeEspecial: mensaje.trim(),
+      precioOriginal: precioBase,
+      descuentoPct,
+      precio: precioFinal,
+    });
+
+    setMensaje('');
+  };
 
   return (
     <div className="detalle-producto-container">
@@ -24,7 +44,7 @@ const DetalleProducto = () => {
         <h1>{producto.nombre}</h1>
         <p><strong>Categoría:</strong> {producto.categoria}</p>
 
-        <select className="selector-tamano">
+        <select className="selector-tamano" value={tamano} onChange={(e) => setTamano(e.target.value)}>
           <option>Pequeña (10p)</option>
           <option>Mediana (20p)</option>
           <option>Grande (30p)</option>
@@ -50,7 +70,9 @@ const DetalleProducto = () => {
           </a>
         </div>
 
-        <button className="btn-agregar">🛒 Añadir al Carrito</button>
+        <button className="btn-agregar" onClick={handleAgregarAlCarrito}>
+          🛒 Añadir al Carrito
+        </button>
       </div>
     </div>
   );

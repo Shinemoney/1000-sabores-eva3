@@ -1,6 +1,6 @@
 .footer-container {
-  background-color: #8B4513; /* Café tipo madera/chocolate */
-  color: white;
+  background-color: #a97142; /* Café más claro */
+  color: #ffc0cb; /* Rosado */
   padding: 30px;
   text-align: center;
   margin-top: auto; /* Empuja el footer al fondo de la página */
@@ -18,7 +18,7 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  border: 2px solid white;
+  border: 2px solid #ffc0cb;
 }
 
 .footer-info {

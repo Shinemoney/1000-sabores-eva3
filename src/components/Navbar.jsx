@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
-import logo from '../assets/logo.jpeg'; 
+import logo from '../assets/logo.jpeg';
+import CartModal from './CartModal';
+import { CartContext } from '../context/CartContext';
 
 const Navbar = () => {
   const [busqueda, setBusqueda] = useState('');
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const navigate = useNavigate();
+  const { resumen } = useContext(CartContext);
 
   const manejarBusqueda = () => {
     if (busqueda.trim()) {
@@ -46,9 +50,12 @@ const Navbar = () => {
           <li><Link to="/blog" className="menu-card">Blog</Link></li>
           <li><Link to="/contacto" className="menu-card">Contacto</Link></li>
         </ul>
-        <Link to="/cart" className="btn-cart">🛒 Carrito </Link>
+        <button className="btn-cart" onClick={() => setIsCartOpen(true)}>
+          🛒 Carrito ({resumen.cantidadTotal})
+        </button>
       </div>
 
+      <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </nav>
   );
 };
