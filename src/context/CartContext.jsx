@@ -34,12 +34,18 @@ export const CartProvider = ({ children }) => {
   const resumen = useMemo(() => {
     const cantidadTotal = cart.reduce((acc, item) => acc + item.cantidad, 0);
     const subtotal = cart.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
+    const ahorroTotal = cart.reduce((acc, item) => {
+      const precioOriginal = item.precioOriginal ?? item.precio;
+      const ahorroUnitario = Math.max(precioOriginal - item.precio, 0);
+      return acc + ahorroUnitario * item.cantidad;
+    }, 0);
     const despacho = subtotal > 0 ? 2990 : 0;
     const total = subtotal + despacho;
 
     return {
       cantidadTotal,
       subtotal,
+      ahorroTotal,
       despacho,
       total,
     };
@@ -48,15 +54,21 @@ export const CartProvider = ({ children }) => {
   // Carrito: agregar producto
   const addToCart = (producto) => {
     setCart((prev) => {
-      const existe = prev.find((item) => item.id === producto.id);
+      const productoNormalizado = {
+        ...producto,
+        precioOriginal: producto.precioOriginal ?? producto.precio,
+        descuentoPct: producto.descuentoPct ?? 0,
+      };
+
+      const existe = prev.find((item) => item.id === productoNormalizado.id);
 
       if (existe) {
         return prev.map((item) =>
-          item.id === producto.id ? { ...item, cantidad: item.cantidad + 1 } : item
+          item.id === productoNormalizado.id ? { ...item, cantidad: item.cantidad + 1 } : item
         );
       }
 
-      return [...prev, { ...producto, cantidad: 1 }];
+      return [...prev, { ...productoNormalizado, cantidad: 1 }];
     });
   };
 
@@ -100,11 +112,14 @@ export const CartProvider = ({ children }) => {
       items: cart.map((item) => ({
         id: item.id,
         nombre: item.nombre,
+        precioOriginal: item.precioOriginal ?? item.precio,
+        descuentoPct: item.descuentoPct ?? 0,
         precioUnitario: item.precio,
         cantidad: item.cantidad,
         subtotal: item.precio * item.cantidad,
       })),
       subtotal: resumen.subtotal,
+      ahorroTotal: resumen.ahorroTotal,
       despacho: resumen.despacho,
       total: resumen.total,
       fechaEntregaPreferida: fechaEntrega,

@@ -51,7 +51,21 @@ const Cart = () => {
             >
               <div>
                 <h3>{item.nombre}</h3>
-                <p>${item.precio.toLocaleString()} CLP</p>
+                {item.descuentoPct > 0 ? (
+                  <>
+                    <p style={{ margin: 0 }}>
+                      <span style={{ textDecoration: 'line-through', color: '#777' }}>
+                        ${item.precioOriginal.toLocaleString()} CLP
+                      </span>{' '}
+                      <span style={{ color: '#b12704', fontWeight: 700 }}>-{item.descuentoPct}%</span>
+                    </p>
+                    <p style={{ margin: '2px 0 0 0', fontWeight: 700 }}>
+                      ${item.precio.toLocaleString()} CLP
+                    </p>
+                  </>
+                ) : (
+                  <p>${item.precio.toLocaleString()} CLP</p>
+                )}
                 <small>Subtotal: ${(item.precio * item.cantidad).toLocaleString()} CLP</small>
               </div>
               <div className="cart-controls">
@@ -68,6 +82,7 @@ const Cart = () => {
           <div style={{ marginTop: '20px', textAlign: 'right' }}>
             <p>Productos: {resumen.cantidadTotal}</p>
             <p>Subtotal: ${resumen.subtotal.toLocaleString()} CLP</p>
+            <p>Ahorro total: -${resumen.ahorroTotal.toLocaleString()} CLP</p>
             <p>Despacho: ${resumen.despacho.toLocaleString()} CLP</p>
             <h2>Total: ${resumen.total.toLocaleString()} CLP</h2>
             <button

@@ -47,7 +47,17 @@ const Ofertas = () => {
                 </div>
 
                 <div className="oferta-actions">
-                  <button className="btn-agregar-oferta" onClick={() => addToCart({ ...prod, precio: precioFinal })}>
+                  <button
+                    className="btn-agregar-oferta"
+                    onClick={() =>
+                      addToCart({
+                        ...prod,
+                        precioOriginal: prod.precio,
+                        descuentoPct: descuento,
+                        precio: precioFinal,
+                      })
+                    }
+                  >
                     Agregar al carrito
                   </button>
                   <Link to={`/producto/${prod.id}`} className="btn-detalle-oferta">

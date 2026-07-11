@@ -41,9 +41,23 @@ const CartModal = ({ isOpen, onClose }) => {
                   <div key={item.id} className="cart-item">
                     <div>
                       <strong>{item.nombre}</strong>
-                      <div className="cart-item-price">
-                        ${item.precio.toLocaleString()} x {item.cantidad}
-                      </div>
+                      {item.descuentoPct > 0 ? (
+                        <>
+                          <div className="cart-item-price">
+                            <span style={{ textDecoration: 'line-through', color: '#777' }}>
+                              ${item.precioOriginal.toLocaleString()} CLP
+                            </span>{' '}
+                            <span style={{ color: '#b12704', fontWeight: 700 }}>-{item.descuentoPct}%</span>
+                          </div>
+                          <div className="cart-item-price">
+                            ${item.precio.toLocaleString()} x {item.cantidad}
+                          </div>
+                        </>
+                      ) : (
+                        <div className="cart-item-price">
+                          ${item.precio.toLocaleString()} x {item.cantidad}
+                        </div>
+                      )}
                     </div>
 
                     <div className="cart-controls">
@@ -63,6 +77,10 @@ const CartModal = ({ isOpen, onClose }) => {
                 <p>
                   <span>Subtotal:</span>
                   <strong>${resumen.subtotal.toLocaleString()} CLP</strong>
+                </p>
+                <p>
+                  <span>Ahorro total:</span>
+                  <strong>-${resumen.ahorroTotal.toLocaleString()} CLP</strong>
                 </p>
                 <p>
                   <span>Despacho:</span>
