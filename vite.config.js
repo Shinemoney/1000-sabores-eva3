@@ -1,8 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [react()],
-  base: '/1000-sabores-eva3/', 
+export default defineConfig(({ mode }) => {
+  return {
+    plugins: [react()],
+    // Si el modo es 'production' usa la base, si es desarrollo usa '/'
+    base: mode === 'production' ? '/1000-sabores-eva3/' : '/',
+  }
 })
