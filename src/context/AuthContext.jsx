@@ -3,18 +3,38 @@ import { createContext, useState } from 'react';
 // Declaramos y exportamos una sola vez
 export const AuthContext = createContext();
 
+const hashText = async (text) => {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(text);
+  const digest = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(digest))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+};
+
 export const AuthProvider = ({ children }) => {
-  const [isAdmin, setIsAdmin] = useState(localStorage.getItem('isAdmin') === 'true');
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  const loginUser = (email, password) => {
+  const loginUser = async (email, password) => {
     const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-    const userFound = registeredUsers.find(
-      (u) => u.email.toLowerCase() === email.toLowerCase() && u.password === password
-    );
+    const passwordHash = await hashText(password);
 
-    if (userFound) {
+    const userFound = registeredUsers.find((u) => u.email.toLowerCase() === email.toLowerCase());
+
+    if (!userFound) return false;
+
+    if (userFound.password === passwordHash) {
       setIsAdmin(false);
-      localStorage.setItem('isAdmin', 'false');
+      return true;
+    }
+
+    // Compatibilidad con usuarios antiguos en texto plano + migración automática
+    if (userFound.password === password) {
+      const updatedUsers = registeredUsers.map((u) =>
+        u.email.toLowerCase() === email.toLowerCase() ? { ...u, password: passwordHash } : u
+      );
+      localStorage.setItem('registeredUsers', JSON.stringify(updatedUsers));
+      setIsAdmin(false);
       return true;
     }
 
@@ -24,7 +44,6 @@ export const AuthProvider = ({ children }) => {
   const loginAdmin = (email, password) => {
     if (email === "admin.pasteleria@gmail.cl" && password === "123456") {
       setIsAdmin(true);
-      localStorage.setItem('isAdmin', 'true');
       return true;
     }
     return false;
@@ -32,7 +51,6 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     setIsAdmin(false);
-    localStorage.removeItem('isAdmin');
   };
 
   return (

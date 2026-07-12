@@ -17,6 +17,17 @@ export const CartProvider = ({ children }) => {
     return savedPedido ? JSON.parse(savedPedido) : null;
   });
 
+  // Checkout y pago simulado
+  const [checkoutDraft, setCheckoutDraft] = useState(() => {
+    const savedDraft = localStorage.getItem('checkoutDraft');
+    return savedDraft ? JSON.parse(savedDraft) : null;
+  });
+
+  const [paymentResult, setPaymentResult] = useState(() => {
+    const savedResult = localStorage.getItem('paymentResult');
+    return savedResult ? JSON.parse(savedResult) : null;
+  });
+
   // Persistencia
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
@@ -29,6 +40,22 @@ export const CartProvider = ({ children }) => {
       localStorage.removeItem('pedidoActual');
     }
   }, [pedidoActual]);
+
+  useEffect(() => {
+    if (checkoutDraft) {
+      localStorage.setItem('checkoutDraft', JSON.stringify(checkoutDraft));
+    } else {
+      localStorage.removeItem('checkoutDraft');
+    }
+  }, [checkoutDraft]);
+
+  useEffect(() => {
+    if (paymentResult) {
+      localStorage.setItem('paymentResult', JSON.stringify(paymentResult));
+    } else {
+      localStorage.removeItem('paymentResult');
+    }
+  }, [paymentResult]);
 
   // Resumen de carrito
   const resumen = useMemo(() => {
@@ -216,6 +243,71 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  const limpiarCarrito = () => setCart([]);
+
+  const generarNumeroOrden = () => {
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = String(now.getMonth() + 1).padStart(2, '0');
+    const d = String(now.getDate()).padStart(2, '0');
+    return `#${y}${m}${d}-${Math.floor(1000 + Math.random() * 9000)}`;
+  };
+
+  const guardarCheckoutDraft = (draft) => {
+    setCheckoutDraft(draft);
+  };
+
+  const procesarPagoSimulado = ({ cliente, direccion, fechaEntrega, forzarError = false }) => {
+    if (!cart.length) return { ok: false, message: 'El carrito está vacío' };
+    if (!cliente?.nombre || !cliente?.apellidos || !cliente?.email) {
+      return { ok: false, message: 'Completa los datos del cliente' };
+    }
+    if (!direccion?.calle || !direccion?.region || !direccion?.comuna) {
+      return { ok: false, message: 'Completa la dirección de entrega' };
+    }
+    if (!fechaEntrega) return { ok: false, message: 'Debes seleccionar fecha de entrega' };
+
+    const resultadoExitoso = !forzarError;
+    const numeroOrden = generarNumeroOrden();
+
+    if (resultadoExitoso) {
+      const direccionTexto = `${direccion.calle}${direccion.departamento ? `, Depto ${direccion.departamento}` : ''}, ${direccion.comuna}, ${direccion.region}${direccion.indicaciones ? ` (${direccion.indicaciones})` : ''}`;
+      const confirmacion = confirmarPedido({
+        fechaEntrega,
+        direccionEntrega: direccionTexto,
+      });
+
+      if (!confirmacion.ok) return confirmacion;
+
+      const result = {
+        status: 'success',
+        numeroOrden,
+        creadoEn: new Date().toISOString(),
+        cliente,
+        direccion,
+        pedido: confirmacion.pedido,
+      };
+
+      setPaymentResult(result);
+      return { ok: true, result };
+    }
+
+    const result = {
+      status: 'error',
+      numeroOrden,
+      creadoEn: new Date().toISOString(),
+      cliente,
+      direccion,
+      cartSnapshot: cart,
+      resumenSnapshot: resumen,
+      motivo: 'No se pudo realizar el pago',
+    };
+
+    setPaymentResult(result);
+    return { ok: true, result };
+  };
+
+  const limpiarResultadoPago = () => setPaymentResult(null);
   const limpiarPedidoActual = () => setPedidoActual(null);
 
   return (
@@ -232,6 +324,12 @@ export const CartProvider = ({ children }) => {
         avanzarEstadoPedido,
         limpiarPedidoActual,
         finalizarPedido,
+        limpiarCarrito,
+        checkoutDraft,
+        guardarCheckoutDraft,
+        paymentResult,
+        procesarPagoSimulado,
+        limpiarResultadoPago,
       }}
     >
       {children}

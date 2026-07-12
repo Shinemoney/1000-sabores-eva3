@@ -82,6 +82,31 @@
   font-weight: 700;
 }
 
+.vista-btn-carrito {
+  margin-top: 12px;
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #fff;
+  background: #ff8c00;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.vista-btn-carrito:hover {
+  background: #e67e00;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(255, 140, 0, 0.3);
+}
+
+.vista-btn-carrito:focus-visible {
+  outline: 3px solid #ffb347;
+  outline-offset: 2px;
+}
+
 @media (max-width: 900px) {
   .vista-productos-grid {
     grid-template-columns: repeat(2, minmax(200px, 1fr));

@@ -1,11 +1,14 @@
 // src/pages/VistaProductosPorCategoria.jsx
+import { useContext } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { productos } from '../data/mockDatabase';
+import { CartContext } from '../context/CartContext';
 import './VistaProductosPorCategoria.css';
 
 const VistaProductosPorCategoria = () => {
   const { nombreCategoria } = useParams();
   const categoriaDecodificada = decodeURIComponent(nombreCategoria);
+  const { addToCart } = useContext(CartContext);
 
   const productosFiltrados = productos.filter(
     (p) => p.categoria === categoriaDecodificada
@@ -30,6 +33,13 @@ const VistaProductosPorCategoria = () => {
               <div className="vista-producto-info">
                 <h3>{prod.nombre}</h3>
                 <p className="vista-producto-precio">${prod.precio}</p>
+                <button
+                  type="button"
+                  className="vista-btn-carrito"
+                  onClick={() => addToCart(prod)}
+                >
+                  Agregar al carrito
+                </button>
               </div>
             </article>
           ))}

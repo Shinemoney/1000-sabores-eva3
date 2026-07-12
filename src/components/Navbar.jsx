@@ -12,8 +12,10 @@ const Navbar = () => {
   const { resumen } = useContext(CartContext);
 
   const manejarBusqueda = () => {
-    if (busqueda.trim()) {
-      navigate(`/catalogo?q=${busqueda}`);
+    const termino = busqueda.trim();
+    if (termino) {
+      navigate(`/catalogo?q=${encodeURIComponent(termino)}`);
+      setBusqueda('');
     }
   };
 
@@ -31,6 +33,9 @@ const Navbar = () => {
             placeholder="Buscar" 
             value={busqueda}
             onChange={(e) => setBusqueda(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') manejarBusqueda();
+            }}
           />
           <button onClick={manejarBusqueda}>Buscar</button>
         </div>

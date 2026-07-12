@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import './Login.css';
@@ -12,6 +12,14 @@ const AdminLogin = () => {
 
   const { loginAdmin } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setEmail('');
+    setPassword('');
+    setFieldErrors({});
+    setAuthError('');
+    setSuccessMessage('');
+  }, []);
 
   const validateFields = () => {
     const newErrors = {};
@@ -61,7 +69,7 @@ const AdminLogin = () => {
 
   return (
     <div className="login-container">
-      <form onSubmit={handleSubmit} className="login-form">
+      <form onSubmit={handleSubmit} className="login-form" autoComplete="off">
         <h2>Acceso Administrador</h2>
 
         {authError && <p className="error-msg">{authError}</p>}
@@ -71,6 +79,8 @@ const AdminLogin = () => {
           <label>Correo Electrónico:</label>
           <input
             type="email"
+            name="admin_auth_email"
+            autoComplete="off"
             placeholder="Ingresa correo admin"
             value={email}
             style={fieldErrors.email ? { border: '2px solid #ff0033' } : {}}
@@ -83,6 +93,8 @@ const AdminLogin = () => {
           <label>Contraseña:</label>
           <input
             type="password"
+            name="admin_auth_pass"
+            autoComplete="new-password"
             placeholder="Ingresa contraseña admin"
             value={password}
             style={fieldErrors.password ? { border: '2px solid #ff0033' } : {}}
@@ -91,7 +103,7 @@ const AdminLogin = () => {
           {fieldErrors.password && <p className="field-error">{fieldErrors.password}</p>}
         </div>
 
-        <button type="submit" className="btn-ingresar">Ingresar como Admin</button>
+        <button type="submit" className="btn-ingresar">Ingresar</button>
       </form>
     </div>
   );

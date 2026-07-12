@@ -23,6 +23,8 @@ import BlogDetalle from './pages/BlogDetalle';
 import DetalleProducto from './pages/DetalleProducto';
 import Catalogo from './pages/Catalogo';
 import AdminPanel from './pages/AdminPanel';
+import Checkout from './pages/Checkout';
+import CheckoutResult from './pages/CheckoutResult';
 
 // Componente para proteger la ruta de administración
 const ProtectedRoute = ({ children }) => {
@@ -46,6 +48,8 @@ function App() {
                 <Route path="/registro" element={<Registro />} />
                 <Route path="/contacto" element={<Contacto />} />
                 <Route path="/cart" element={<Cart />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/checkout/resultado" element={<CheckoutResult />} />
                 
                 {/* Ruta protegida del AdminDashboard */}
                 <Route path="/admin" element={

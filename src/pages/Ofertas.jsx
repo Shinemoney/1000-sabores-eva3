@@ -1,13 +1,67 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { productos } from '../data/mockDatabase';
 import { CartContext } from '../context/CartContext';
 import './Ofertas.css';
 
+const STORAGE_KEY = 'admin_productos';
+
+const cargarProductosDisponibles = () => {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    }
+  } catch {
+    // fallback abajo
+  }
+  return productos;
+};
+
 const Ofertas = () => {
   const { addToCart } = useContext(CartContext);
+  const [productosEnOferta, setProductosEnOferta] = useState([]);
 
-  const productosEnOferta = productos.filter((p) => p.oferta === true);
+  useEffect(() => {
+    const refrescarOfertas = () => {
+      const productosFuente = cargarProductosDisponibles();
+      const ofertasAdmin = productosFuente.filter(
+        (p) => p.oferta === true && p.imagen && p.imagen !== '/favicon.svg'
+      );
+      const ofertasBase = productos.filter(
+        (p) => p.oferta === true && p.imagen && p.imagen !== '/favicon.svg'
+      );
+
+      const combinadas = [...ofertasAdmin];
+      const ids = new Set(combinadas.map((p) => p.id));
+
+      for (const p of ofertasBase) {
+        if (combinadas.length >= 4) break;
+        if (!ids.has(p.id)) {
+          combinadas.push(p);
+          ids.add(p.id);
+        }
+      }
+
+      setProductosEnOferta(combinadas.slice(0, 4));
+    };
+
+    const onStorage = (e) => {
+      if (e.key === STORAGE_KEY) refrescarOfertas();
+    };
+
+    refrescarOfertas();
+    window.addEventListener('storage', onStorage);
+    window.addEventListener('admin-stock-updated', refrescarOfertas);
+
+    return () => {
+      window.removeEventListener('storage', onStorage);
+      window.removeEventListener('admin-stock-updated', refrescarOfertas);
+    };
+  }, []);
 
   const calcularPreciosOferta = (precioBase) => {
     const descuento = 20; // descuento estándar para tarjeta de oferta
@@ -19,7 +73,7 @@ const Ofertas = () => {
 
   return (
     <div className="ofertas-container">
-      <h1>¡Ofertas Especiales!</h1>
+      <h1>Ofertas Especiales!</h1>
 
       {productosEnOferta.length === 0 ? (
         <div className="ofertas-empty">

@@ -1,27 +1,35 @@
 .footer-container {
-  background-color: #a97142; /* Café más claro */
-  color: #ffc0cb; /* Rosado */
-  padding: 30px;
+  background-color: #7b3f13;
+  color: #ff69b4;
+  padding: 30px 20px 22px;
   text-align: center;
-  margin-top: auto; /* Empuja el footer al fondo de la página */
+  margin-top: auto;
 }
 
 .footer-logo-section {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px;
-  margin-bottom: 15px;
+  gap: 18px;
+  margin-bottom: 14px;
 }
 
 .footer-logo {
-  width: 60px;
-  height: 60px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
-  border: 2px solid #ffc0cb;
 }
 
-.footer-info {
-  font-size: 0.9rem;
-  line-height: 1.6;
+.footer-logo-section h2 {
+  margin: 0;
+  color: #ff69b4;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.footer-info p {
+  margin: 6px 0;
+  color: #ff69b4;
+  font-size: 16px;
+  font-weight: 600;
 }

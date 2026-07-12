@@ -1,5 +1,5 @@
 // src/pages/Registro.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useFormValidation } from '../hooks/useFormValidation';
 
 const fieldLabels = {
@@ -13,6 +13,15 @@ const fieldLabels = {
   region: 'Región',
   comuna: 'Comuna',
   direccion: 'Dirección',
+};
+
+const hashText = async (text) => {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(text);
+  const digest = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(digest))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
 };
 
 const Registro = () => {
@@ -34,7 +43,12 @@ const Registro = () => {
     fieldLabels
   );
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    const form = document.querySelector('form[data-user-register="true"]');
+    if (form) form.reset();
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setSuccessMessage('');
 
@@ -47,11 +61,13 @@ const Registro = () => {
         return;
       }
 
+      const passwordHash = await hashText(values.password);
+
       const newUser = {
         nombre: values.nombre,
         apellido: values.apellido,
         email: values.email,
-        password: values.password,
+        password: passwordHash,
       };
 
       localStorage.setItem('registeredUsers', JSON.stringify([...registeredUsers, newUser]));
@@ -88,7 +104,13 @@ const Registro = () => {
 
   return (
     <div className="container mt-5">
-      <form onSubmit={handleSubmit} className="card p-4 shadow-sm" style={{ maxWidth: '600px', margin: 'auto' }}>
+      <form
+        onSubmit={handleSubmit}
+        className="card p-4 shadow-sm"
+        style={{ maxWidth: '600px', margin: 'auto' }}
+        autoComplete="off"
+        data-user-register="true"
+      >
         <h2 style={{ color: '#5D4037', fontFamily: 'Pacifico, cursive' }}>Registro</h2>
 
         {successMessage && (
@@ -138,6 +160,13 @@ const Registro = () => {
               <input
                 name={f.name}
                 type={f.type || 'text'}
+                autoComplete={
+                  f.name === 'email'
+                    ? 'username'
+                    : f.name === 'password'
+                    ? 'new-password'
+                    : 'off'
+                }
                 value={values[f.name]}
                 className="form-control"
                 style={errors[f.name] ? { border: '2px solid #ff0033' } : {}}

@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CartContext } from '../context/CartContext';
 
 const estadoLabel = {
@@ -8,26 +9,17 @@ const estadoLabel = {
 };
 
 const Cart = () => {
+  const navigate = useNavigate();
   const {
     cart,
     resumen,
     pedidoActual,
     removeFromCart,
     updateCantidad,
-    confirmarPedido,
     avanzarEstadoPedido,
     limpiarPedidoActual,
+    limpiarCarrito,
   } = useContext(CartContext);
-
-  const finalizarDirecto = () => {
-    const fechaDefault = new Date();
-    fechaDefault.setDate(fechaDefault.getDate() + 1);
-
-    confirmarPedido({
-      fechaEntrega: fechaDefault.toISOString().split('T')[0],
-      direccionEntrega: 'Dirección no especificada',
-    });
-  };
 
   return (
     <div className="cart-container" style={{ padding: '20px', maxWidth: '900px', margin: 'auto' }}>
@@ -85,19 +77,35 @@ const Cart = () => {
             <p>Ahorro total: -${resumen.ahorroTotal.toLocaleString()} CLP</p>
             <p>Despacho: ${resumen.despacho.toLocaleString()} CLP</p>
             <h2>Total: ${resumen.total.toLocaleString()} CLP</h2>
-            <button
-              onClick={finalizarDirecto}
-              style={{
-                backgroundColor: '#8b4513',
-                color: 'white',
-                padding: '12px 24px',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: '1rem',
-              }}
-            >
-              Confirmar Pedido
-            </button>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', flexWrap: 'wrap' }}>
+              <button
+                onClick={limpiarCarrito}
+                style={{
+                  backgroundColor: '#f1f1f1',
+                  color: '#333',
+                  padding: '12px 20px',
+                  border: '1px solid #ccc',
+                  cursor: 'pointer',
+                  fontSize: '1rem',
+                }}
+              >
+                Limpiar carrito
+              </button>
+
+              <button
+                onClick={() => navigate('/checkout')}
+                style={{
+                  backgroundColor: '#8b4513',
+                  color: 'white',
+                  padding: '12px 24px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: '1rem',
+                }}
+              >
+                Comprar ahora
+              </button>
+            </div>
           </div>
         </>
       )}

@@ -1,15 +1,48 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
 
 const Home = () => {
   const navigate = useNavigate();
   const [mostrarHorario, setMostrarHorario] = useState(false);
+  const slides = [
+    {
+      titulo: 'Torta Tres Leches',
+      descripcion: 'Bizcocho suave con crema y toque de vainilla, ideal para celebraciones.',
+      imagen: '/1image.jpeg',
+    },
+    {
+      titulo: 'Caja de Cupcakes',
+      descripcion: 'Cupcakes surtidos decorados a mano, perfectos para compartir.',
+      imagen: '/2image.jpeg',
+    },
+    {
+      titulo: 'Cheesecake de Frutos Rojos',
+      descripcion: 'Base crocante, crema suave y cobertura de frutos rojos frescos.',
+      imagen: '/3image.jpeg',
+    },
+  ];
+  const [slideActual, setSlideActual] = useState(0);
+
+  useEffect(() => {
+    const intervalo = setInterval(() => {
+      setSlideActual((prev) => (prev + 1) % slides.length);
+    }, 3500);
+
+    return () => clearInterval(intervalo);
+  }, [slides.length]);
+
+  const irSlideAnterior = () => {
+    setSlideActual((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
+  const irSlideSiguiente = () => {
+    setSlideActual((prev) => (prev + 1) % slides.length);
+  };
 
   return (
     <div className="home-container">
       <div className="home-layout">
-        {/* Lateral izquierdo: acciones */}
         <aside className="home-sidebar-acciones">
           <button className="home-card-accion" onClick={() => navigate('/catalogo')}>
             Ver catálogo
@@ -20,15 +53,34 @@ const Home = () => {
           </button>
 
           <button className="home-card-accion card-admin" onClick={() => navigate('/admin-login')}>
-            Acces admin
+            Admin
           </button>
         </aside>
 
-        {/* Área principal vacía para mantener estructura */}
-        <section className="home-main-placeholder" />
+        <section className="home-main-placeholder">
+          <div className="home-lanzamientos-card">
+            <button className="slider-arrow" onClick={irSlideAnterior} aria-label="Slide anterior">❮</button>
+
+            <div className="home-lanzamientos-content">
+              <img
+                src={slides[slideActual].imagen}
+                alt={slides[slideActual].titulo}
+                className="home-slide-image"
+              />
+              <h2>{slides[slideActual].titulo}</h2>
+              <p>{slides[slideActual].descripcion}</p>
+              <div className="slider-dots">
+                {slides.map((_, index) => (
+                  <span key={index} className={`dot ${index === slideActual ? 'active' : ''}`}></span>
+                ))}
+              </div>
+            </div>
+
+            <button className="slider-arrow" onClick={irSlideSiguiente} aria-label="Siguiente slide">❯</button>
+          </div>
+        </section>
       </div>
 
-      {/* Modal de Horario */}
       {mostrarHorario && (
         <div className="modal-overlay">
           <div className="modal-content">

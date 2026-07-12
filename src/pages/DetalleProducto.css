@@ -70,3 +70,46 @@
   width: 100%;
   box-sizing: border-box;
 }
+
+.extra-info {
+  display: grid;
+  gap: 12px;
+  text-align: left;
+}
+
+.extra-card {
+  background: #fff8ef;
+  border: 1px solid #ffd8ea;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.extra-card h3 {
+  margin: 0 0 8px;
+  color: #6d2f1a;
+  font-size: 1rem;
+}
+
+.extra-card p {
+  margin: 0;
+  color: #4a3b32;
+  line-height: 1.45;
+  font-size: 0.95rem;
+}
+
+.extra-recomendaciones {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+}
+
+.extra-recomendaciones li {
+  color: #3f3229;
+  font-size: 0.92rem;
+}
+
+.extra-impacto {
+  background: #fff3f8;
+  border-color: #ffbfdc;
+}

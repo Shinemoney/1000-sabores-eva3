@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import './Login.css';
@@ -12,6 +12,14 @@ const Login = () => {
 
   const { loginUser } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setEmail('');
+    setPassword('');
+    setFieldErrors({});
+    setAuthError('');
+    setSuccessMessage('');
+  }, []);
 
   const validateFields = () => {
     const newErrors = {};
@@ -28,14 +36,14 @@ const Login = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setAuthError('');
     setSuccessMessage('');
 
     if (!validateFields()) return;
 
-    if (loginUser(email, password)) {
+    if (await loginUser(email, password)) {
       setSuccessMessage('Inicio de sesión exitoso.');
       setTimeout(() => navigate('/'), 700);
     } else {
@@ -61,7 +69,7 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <form onSubmit={handleSubmit} className="login-form">
+      <form onSubmit={handleSubmit} className="login-form" autoComplete="off">
         <h2>Iniciar Sesión</h2>
 
         {authError && <p className="error-msg">{authError}</p>}
@@ -71,6 +79,8 @@ const Login = () => {
           <label>Correo Electrónico:</label>
           <input
             type="email"
+            name="user_auth_email"
+            autoComplete="username"
             placeholder="Ingresa tu correo"
             value={email}
             style={fieldErrors.email ? { border: '2px solid #ff0033' } : {}}
@@ -83,6 +93,8 @@ const Login = () => {
           <label>Contraseña:</label>
           <input
             type="password"
+            name="user_auth_pass"
+            autoComplete="new-password"
             placeholder="Ingresa tu contraseña"
             value={password}
             style={fieldErrors.password ? { border: '2px solid #ff0033' } : {}}
